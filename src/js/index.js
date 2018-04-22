@@ -4,7 +4,6 @@ import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
 import { elements, renderLoader, clearLoader } from "./views/base";
 
-
 // Global state of the app
 // Search object
 // current recipe object
@@ -19,9 +18,9 @@ const state = {};
 
 const controlSearch = async () => {
     // 1) Get query from view
-    
-    const query = searchView.getInput(); 
-   
+
+    const query = searchView.getInput();
+
     //TODO
 
     if (query) {
@@ -67,18 +66,19 @@ elements.searchResPages.addEventListener("click", e => {
 const controlRecipe = async () => {
     // Get ID from url
     const id = window.location.hash.replace("#", "");
-    
+   
     if (id) {
-        // Prepare UI for changes
+         // Prepare UI for changes
         recipeView.clearRecipe();
         renderLoader(elements.recipe);
 
         // Create new recipe object
         state.recipe = new Recipe(id);
-       
+
         try {
             // Get recipe data and parse Ingredients
             await state.recipe.getRecipe();
+
             state.recipe.parseIngredients();
 
             // Calculate servings and time
@@ -95,10 +95,6 @@ const controlRecipe = async () => {
     }
 };
 
-window.addEventListener('hashchange',controlRecipe);
-
-window.addEventListener('load',controlRecipe);
-
-["haschange", "load"].forEach(event =>
+["hashchange", "load"].forEach(event =>
     window.addEventListener(event, controlRecipe)
 );

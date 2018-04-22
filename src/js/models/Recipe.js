@@ -53,18 +53,17 @@ export default class Recipe {
             // 1) Uniform units
             let ingredient = el.toLowerCase();
             unitsLong.forEach((unit, i) => {
-                ingredient.replace(unit, unitsShort[i]);
+                ingredient = ingredient.replace(unit, unitsShort[i]);
             });
-
+            
             // 2) Remove parentheses
             ingredient = ingredient.replace(/ *\([^)]*\), */g, ", ");
             ingredient = ingredient.replace(/ *\([^)]*\) */g, " ");
+            
             // 3) Parse ingredients into count, unit and ingredient
             const arrIng = ingredient.split(" ");
             const unitIndex = arrIng.findIndex(el2 => unitsShort.includes(el2));
-
             let objIng;
-
             if (unitIndex > -1) {
                 // There is a unit
                 // Ex. 4 1/2 cups, arrCount is [4, 1/2]
@@ -83,6 +82,7 @@ export default class Recipe {
                     unit: arrIng[unitIndex],
                     ingredient: arrIng.slice(unitIndex + 1).join(" ")
                 };
+                
             } else if (parseInt(arrIng[0], 10)) {
                 // There is NO unit, but 1st element is number
                 objIng = {
@@ -98,10 +98,11 @@ export default class Recipe {
                     ingredient
                 };
             }
-
-            return ingredient;
+            
+            return objIng;
         });
 
         this.ingredients = newIngredients;
+       
     }
 }
