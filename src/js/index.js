@@ -1,5 +1,6 @@
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
+import List from "./models/List";
 import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
 import { elements, renderLoader, clearLoader } from "./views/base";
@@ -41,6 +42,7 @@ const controlSearch = async () => {
             searchView.renderResults(state.search.result);
         } catch (err) {
             alert("Something wrong with the search...");
+            console.log(err);
             clearLoader();
         }
     }
@@ -66,11 +68,14 @@ elements.searchResPages.addEventListener("click", e => {
 const controlRecipe = async () => {
     // Get ID from url
     const id = window.location.hash.replace("#", "");
-   
+
     if (id) {
-         // Prepare UI for changes
+        // Prepare UI for changes
         recipeView.clearRecipe();
         renderLoader(elements.recipe);
+
+        // Hightlight selected
+        if (state.search) searchView.highlightSelected(id);
 
         // Create new recipe object
         state.recipe = new Recipe(id);
@@ -90,6 +95,7 @@ const controlRecipe = async () => {
             recipeView.renderRecipe(state.recipe);
         } catch (err) {
             alert("Error processing recipe!");
+            clearLoader();
             console.log(err);
         }
     }
@@ -98,3 +104,18 @@ const controlRecipe = async () => {
 ["hashchange", "load"].forEach(event =>
     window.addEventListener(event, controlRecipe)
 );
+
+// Handling recipe button clicks
+elements.recipe.addEventListener("click", e => {
+    if (e.target.matches(".btn-decrease,.btn-decrease *")) {
+        // Decrease button is clicked
+        if (state.recipe.servings > 1) {
+            state.recipe.updateServings("dec");
+            recipeView.updateServingsIngredients(state.recipe);
+        }
+    } else if (e.target.matches(".btn-increase,.btn-increase *")) {
+        // increase button is clicked
+        state.recipe.updateServings("inc");
+        recipeView.updateServingsIngredients(state.recipe);
+    }
+});
