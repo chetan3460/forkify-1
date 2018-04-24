@@ -17,10 +17,10 @@ export const highlightSelected = id => {
         el.classList.remove('results__link--active');
     });
 
-    document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active');
+    document.querySelector(`.results__link[href*="#${id}"]`).classList.add('results__link--active');
 };
 
-const limitRecipeTitle = (title, limit = 19) =>
+export const limitRecipeTitle = (title, limit = 19) =>
     title.length > limit
         ? title.substring(0, title.substring(0, limit).lastIndexOf(" ")) + "..."
         : title;
@@ -29,8 +29,7 @@ const renderRecipe = recipe => {
     const markup = `
         <li>
             <a class="results__link" href="#${recipe.recipe_id}" title="${
-        recipe.title
-    }">
+        recipe.title}">
                 <figure class="results__fig">
                     <img src="${recipe.image_url.replace(
                         "http",
