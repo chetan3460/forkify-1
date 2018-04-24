@@ -1,4 +1,4 @@
-import uniqid from 'uniqid'
+import uniqid from "uniqid";
 export default class List {
     constructor() {
         this.items = [];
@@ -6,7 +6,7 @@ export default class List {
 
     addItem(count, unit, ingredient) {
         const item = {
-            id:uniqid(),
+            id: uniqid(),
             count,
             unit,
             ingredient
@@ -15,12 +15,12 @@ export default class List {
         return item;
     }
 
-    deleteItem(id){
-        const index = this.items.findIndex(el=>el.id===id);
+    deleteItem(id) {
+        const index = this.items.findIndex(el => el.id === id);
         this.items.splice(index, 1);
     }
 
-    updateCount(id, newCount){
-        this.items.find(el=> el.id ===id).count = newCount;
+    updateCount(id, newCount) {
+        this.items.find(el => el.id === id).count = newCount;
     }
 }

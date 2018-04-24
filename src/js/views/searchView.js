@@ -12,12 +12,14 @@ export const clearResult = () => {
 };
 
 export const highlightSelected = id => {
-    const resultsArr = Array.from(document.querySelectorAll('.results__link'));
-    resultsArr.forEach(el=> {
-        el.classList.remove('results__link--active');
+    const resultsArr = Array.from(document.querySelectorAll(".results__link"));
+    resultsArr.forEach(el => {
+        el.classList.remove("results__link--active");
     });
 
-    document.querySelector(`.results__link[href*="#${id}"]`).classList.add('results__link--active');
+    if (document.querySelector(`.results__link[href*="#${id}"]`)) document
+            .querySelector(`.results__link[href*="#${id}"]`)
+            .classList.add("results__link--active");
 };
 
 export const limitRecipeTitle = (title, limit = 19) =>
@@ -29,7 +31,8 @@ const renderRecipe = recipe => {
     const markup = `
         <li>
             <a class="results__link" href="#${recipe.recipe_id}" title="${
-        recipe.title}">
+        recipe.title
+    }">
                 <figure class="results__fig">
                     <img src="${recipe.image_url.replace(
                         "http",
@@ -51,7 +54,8 @@ const renderRecipe = recipe => {
 // type: 'prev' or 'next
 const createButton = (page, type) => `
         <button class="btn-inline results__btn--${type}" data-goto=${
-    type === "prev" ? page - 1 : page + 1}>
+    type === "prev" ? page - 1 : page + 1
+}>
             <span>Page ${type === "prev" ? page - 1 : page + 1}</span>
             <svg class="search__icon">
                 <use href="img/icons.svg#icon-triangle-${
